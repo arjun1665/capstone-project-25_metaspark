@@ -1,5 +1,19 @@
-What could be the vehicle Computational power?
-How vehicle can be an edge?(low CPU storage)  
-How will u handle interoperability across various regions?(remote regions)
-What kind of data will u send?
-How will u schedule tasks if vehicles are highly mobile and unpredictable?
+1)What could be the vehicle Computational power?
+In MARINA’s model, a vehicle is assumed to contribute only a small compute slice (≈1 MIPS CPU and 1 MB storage unit). 
+Individually, this is limited, but when many vehicles form a vehicular cloud, their aggregated resources become sufficient for running lightweight edge tasks and reducing reliance on base stations.
+
+2)How vehicle can be an edge?
+Modern vehicles already host powerful onboard units (e.g., NVIDIA Jetson, Qualcomm Snapdragon Ride, Tesla FSD chips) capable of tens to hundreds of TOPS for ADAS and AI tasks.
+These resources can be partially shared for VEC, letting vehicles run lightweight tasks, preprocess sensor data, or cache content. 
+In MARINA, such vehicles act as edge nodes, and when pooled into a vehicular cloud, they provide meaningful compute power.
+
+3)How will u handle interoperability across various regions?
+Use standardized APIs/middleware (ETSI MEC, MQTT, DDS) so regional VEC controllers can coordinate. 
+In remote/low-connectivity areas, rely on local processing, store-and-forward, and V2V relaying until reconnection is possible.
+
+4)How will u schedule tasks if vehicles are highly mobile and unpredictable?
+MARINA tackles this by using an LSTM-based mobility prediction model to forecast whether a vehicle or RSU will remain available during task execution. 
+This prediction feeds into the scheduler, helping it avoid assigning tasks to nodes that may soon disconnect, ensuring more reliable execution.
+
+
+
