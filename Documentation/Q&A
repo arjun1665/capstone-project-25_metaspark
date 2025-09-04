@@ -15,5 +15,10 @@ In remote/low-connectivity areas, rely on local processing, store-and-forward, a
 MARINA tackles this by using an LSTM-based mobility prediction model to forecast whether a vehicle or RSU will remain available during task execution. 
 This prediction feeds into the scheduler, helping it avoid assigning tasks to nodes that may soon disconnect, ensuring more reliable execution.
 
+5)what kind of data is sent over vehicles?
+Vehicles mainly send periodic beacons (ID, position, speed, route, available CPU/storage) to help the VEC controller manage scheduling.
+They can also offload task metadata (size, deadline, required cycles) and sometimes preprocessed sensor data (e.g., object lists, compressed frames). 
+After computation, vehicles return only the processed results or decisions, keeping communication lightweight.
+
 
 
