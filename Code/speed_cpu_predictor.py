@@ -1,4 +1,3 @@
-# speed_cpu_predictor.py
 import numpy as np
 import tensorflow as tf
 from sklearn.preprocessing import MinMaxScaler
@@ -50,4 +49,5 @@ class SpeedCPU_Predictor:
             predicted_values = self.scaler.inverse_transform(predicted_scaled)
             predictions.append(predicted_values[0])
             current_input_sequence = np.vstack([current_input_sequence[0][1:], predicted_scaled[0].reshape(1, -1)]).reshape(1, self.time_steps, self.num_features)
+
         return predictions
