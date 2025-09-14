@@ -8,7 +8,7 @@ import java.util.*;
 public class TestMARINA {
     public static void main(String[] args) {
         String vehicleTraceFile = "dataset/sample_vehicle_trace.csv"; 
-        String predictedFile = "predict_vehicle_metrics.csv"; 
+        String predictedFile = "dataset/predict_vehicle_metrics.csv"; // written by main.py
 
         List<VehicleState> allVehicles = TraceLoader.loadVehicleTrace(vehicleTraceFile);
 
@@ -16,6 +16,7 @@ public class TestMARINA {
         baseStations.add(new BaseStation("BS1", 100.0, 100.0, 50.0, 200.0, 250.0));
         baseStations.add(new BaseStation("BS2", 400.0, 300.0, 70.0, 300.0, 250.0));
 
+        // 🔹 Load predictions written by Python main.py
         Map<String, Map<Integer,double[]>> predicted = ResourcePredictor.loadPredictions(predictedFile);
 
         int maxTime = allVehicles.stream().mapToInt(VehicleState::getTime).max().orElse(0);
@@ -29,11 +30,13 @@ public class TestMARINA {
 
             List<VehicleState> vehicles = TraceLoader.getVehiclesAtTime(allVehicles, time);
 
+            // Move persistent random vehicles and add them
             for (VehicleState rv : activeRandomVehicles) {
                 rv.moveOneTick();
                 vehicles.add(rv);
             }
 
+            // Spawn new random vehicle with persistence
             if (rnd.nextDouble() < 0.2) {
                 String newId = "RandVeh_" + time + "_" + rnd.nextInt(1000);
                 double x = rnd.nextDouble() * 500;
@@ -46,6 +49,7 @@ public class TestMARINA {
                 System.out.println("🚗 New persistent random vehicle added: " + newId);
             }
 
+            // Apply predictions (offset=1 is used)
             for (VehicleState v : vehicles) {
                 if (predicted.containsKey(v.getId())) {
                     Map<Integer,double[]> preds = predicted.get(v.getId());
@@ -56,6 +60,7 @@ public class TestMARINA {
                 }
             }
 
+            // --- Scheduling logic (unchanged) ---
             List<VehicularCloud> vcs = new ArrayList<>();
             for (BaseStation bs : baseStations) {
                 VehicularCloud vc = new VehicularCloud("VC_" + bs.getId(), bs, new ArrayList<>());
