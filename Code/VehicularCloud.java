@@ -1,45 +1,35 @@
 package org.fog.marina;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VehicularCloud {
-    private int id;
-    private List<VehicleState> members;
+    private String id;
+    private BaseStation baseStation; // can be null for ad-hoc VC (vehicle-only)
+    private List<VehicleState> vehicles;
 
-    public VehicularCloud(int id) {
+    public VehicularCloud(String id, BaseStation baseStation, List<VehicleState> vehicles) {
         this.id = id;
-        this.members = new ArrayList<>();
+        this.baseStation = baseStation;
+        this.vehicles = vehicles;
     }
 
-    public void addMember(VehicleState v) {
-        members.add(v);
+    public String getId() { return id; }
+    public BaseStation getBaseStation() { return baseStation; }
+    public List<VehicleState> getVehicles() { return vehicles; }
+
+    public double totalCpu() {
+        double sum = 0.0;
+        if (baseStation != null) sum += baseStation.getCpuCapacity();
+        for (VehicleState v : vehicles) sum += v.getCpuCapacity();
+        return sum;
     }
 
-    public List<VehicleState> getMembers() {
-        return members;
-    }
-
-    public double getTotalCpu() {
-        return members.stream().mapToDouble(VehicleState::getCpuCapacity).sum();
-    }
-
-    public int getSize() {
-        return members.size();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("VC-").append(id).append(" { ");
-        for (VehicleState v : members) {
-            sb.append("Veh").append(v.getId()).append(" ");
-        }
-        sb.append("} | Total CPU: ").append(getTotalCpu());
-        return sb.toString();
+    public double totalStorage() {
+        double sum = 0.0;
+        if (baseStation != null) sum += baseStation.getStorage();
+        for (VehicleState v : vehicles) sum += v.getStorage();
+        return sum;
     }
 }
+
+what does this code do?
