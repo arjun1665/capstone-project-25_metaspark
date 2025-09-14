@@ -4,7 +4,7 @@ import java.util.List;
 
 public class VehicularCloud {
     private String id;
-    private BaseStation baseStation; // can be null for ad-hoc VC (vehicle-only)
+    private BaseStation baseStation;
     private List<VehicleState> vehicles;
 
     public VehicularCloud(String id, BaseStation baseStation, List<VehicleState> vehicles) {
@@ -31,5 +31,3 @@ public class VehicularCloud {
         return sum;
     }
 }
-
-what does this code do?
